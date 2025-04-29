@@ -4,6 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class LoginView
+/*
+        This will be the login page. It will include a way to input the player username and password.
+        It will include the option to login or signup. If the user does not have an account the system
+        should prompt the user to signup. Alternatively, if the user has an account and selected signup,
+        the system should prompt the user to login.
+ */
 {
     private JFrame jFrame;
 

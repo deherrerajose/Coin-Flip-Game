@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class GameView
+/*
+        This will be the primary game page. It will include the leaderboard which shows the top 3 players
+        with the highest balance, the authenticated players balance, a way to bet (bet amount, tail and
+        heads option), a way to submit the bet, and a way to view results.
+ */
 {
     private JFrame jFrame;
 
