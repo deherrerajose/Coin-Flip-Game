@@ -82,7 +82,7 @@ public class LoginView
     }
 
     public String getUsername() { return username.getText(); }
-    public String getPassword() { return username.getText(); }
+    public String getPassword() { return password.getText(); }
 
     public void setMessage(String message) { errorMessage.setText(message); }
     public void setLoginListener(ActionListener a) { login.addActionListener(a); }
