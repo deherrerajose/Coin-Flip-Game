@@ -40,9 +40,7 @@ public class ClientNetwork
 
     public static String authenticateUser(String username, String password, int mode)
     {
-        serverOutput.println(username);
-        serverOutput.println(password);
-        serverOutput.println(mode);
+        serverOutput.println(String.format("%s:%s:%d", username, password, mode));
 
         try
         {

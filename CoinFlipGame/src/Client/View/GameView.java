@@ -1,6 +1,7 @@
 package Client.View;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameView
@@ -10,17 +11,21 @@ public class GameView
         heads option), a way to submit the bet, and a way to view results.
  */
 {
+
     private JFrame jFrame;
 
     private JLabel first ;
     private JLabel second;
     private JLabel third ;
 
+    private JLabel result;
+
+
     private JLabel balance;
     private JTextField betAmount;
-    private JButton headBet;
-    private JButton tailBet;
-    private JLabel result;
+    private JComboBox dropdown;
+    private JButton bet;
+    private JButton swap;
 
     //  Sources
     //      https://www.cs.rutgers.edu/courses/111/classes/fall_2011_tjang/texts/notes-java/GUI/layouts/42boxlayout-spacing.html
@@ -50,31 +55,43 @@ public class GameView
         leaderBoard.add(Box.createRigidArea(new Dimension(0, 10)));
         leaderBoard.add(third);
 
-        balance = new JLabel("$100.00");
-        betAmount = new JTextField(25);
-        headBet = new JButton("Heads");
-        tailBet = new JButton("Tails");
+        jFrame.add(leaderBoard, BorderLayout.WEST);
 
+
+        result = new JLabel("Pending...");
+        result.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jFrame.add(result, BorderLayout.EAST);
+
+        JPanel betPanel = new JPanel();
+        betPanel.setLayout(new BoxLayout(betPanel, BoxLayout.Y_AXIS));
+
+        balance = new JLabel("$100.00");
+        balance.setAlignmentX(Component.CENTER_ALIGNMENT);
+        betAmount = new JTextField(25);
+        betAmount.setMaximumSize( betAmount.getPreferredSize() );
+
+        dropdown = new JComboBox();
+
+        bet  = new JButton("Place Bet");
+        swap = new JButton("Swap Game");
 
         JPanel betBoard = new JPanel();
-        leaderBoard.setLayout(new BoxLayout(leaderBoard, BoxLayout.Y_AXIS));
+        betBoard.setLayout(new BoxLayout(betBoard, BoxLayout.Y_AXIS));
         betBoard.add(balance);
         betBoard.add(betAmount);
 
         JPanel subBoard = new JPanel();
-        subBoard.add(headBet);
-        subBoard.add(Box.createRigidArea(new Dimension(10, 0)));
-        subBoard.add(tailBet);
+        subBoard.add(dropdown);
+        subBoard.add(Box.createRigidArea(new Dimension(5, 0)));
+        subBoard.add(bet);
+        subBoard.add(Box.createRigidArea(new Dimension(5, 0)));
+        subBoard.add(swap);
 
         betBoard.add(subBoard);
 
 
-        result = new JLabel("Pending...");
-
-        jFrame.add(result, BorderLayout.EAST);
-        jFrame.add(leaderBoard, BorderLayout.WEST);
-        jFrame.add(betBoard, BorderLayout.SOUTH);
-
+        betPanel.add(betBoard);
+        jFrame.add(betPanel, BorderLayout.SOUTH);
 
     }
 
@@ -85,10 +102,20 @@ public class GameView
         this.third.setText(first);
     }
 
-    public void setBalance(String bal) { balance.setText("$"+bal); }
     public void setResult(String res) { result.setText(res); }
-    public String readBet() { return betAmount.getText(); }
 
-    public void setHeadBetListener(ActionListener a) { headBet.addActionListener(a); }
-    public void setTailBetListener(ActionListener a) { tailBet.addActionListener(a); }
+    public void setSwapListener(ActionListener a) { swap.addActionListener(a); }
+    public void setBetOption(String[] options)
+    {
+        dropdown.removeAllItems();
+        for (String item : options)
+        {
+            dropdown.addItem(item);
+        }
+        jFrame.setVisible(true);
+    }
+
+
+    public void setBalance(String bal) { balance.setText("$"+bal); }
+    public String readBet() { return betAmount.getText(); }
 }
