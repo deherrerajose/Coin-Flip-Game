@@ -10,6 +10,7 @@ public class DAO {
     private final String URL = "jdbc:sqlite:database.db";
     private Connection connection;
 
+    // Constructor | Pre-configures the player table (IF NOT EXISTS)
     public DAO() {
         try {
             connection = getConnection();
