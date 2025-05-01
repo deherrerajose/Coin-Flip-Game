@@ -13,6 +13,12 @@ public class PlayerModel {
         this.balance = 1000;
     }
 
+    public PlayerModel(String username, String password) {
+        this.username = username;
+        this.balance = 1000;
+        this.hashed_password = password;
+    }
+
     // Getters & Setters for `playerID`
     public int getPlayerID() {
         return playerID;
