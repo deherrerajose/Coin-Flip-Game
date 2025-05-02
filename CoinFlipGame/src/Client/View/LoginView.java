@@ -2,6 +2,7 @@ package Client.View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 public class LoginView
 /*
@@ -87,4 +88,9 @@ public class LoginView
     public void setMessage(String message) { errorMessage.setText(message); }
     public void setLoginListener(ActionListener a) { login.addActionListener(a); }
     public void setSignUpListener(ActionListener a) { signUp.addActionListener(a); }
+
+    public void close()
+    {
+        jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
+    }
 }

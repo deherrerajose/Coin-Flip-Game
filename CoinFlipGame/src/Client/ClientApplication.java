@@ -28,6 +28,9 @@ public class ClientApplication {
         LoginView loginView = new LoginView();
         LoginController loginController = new LoginController(loginView);
 
+        while(!loginController.isLoggedIn());
+        loginView.close();
+
         GameView view = new GameView();
         GameController controller = new GameController(view);
     }

@@ -56,7 +56,7 @@ public class ClientHandler implements Runnable {
                         }
 
                         String hashed_pass = player.getHash();
-                        System.out.println(hashed_pass);
+//                        System.out.println(hashed_pass);
                         if (!hashed_pass.equals(password))
                         {
                             bufferedWriter.write("Password is incorrect.");
@@ -130,7 +130,7 @@ public class ClientHandler implements Runnable {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Client [ " + clientSocket.getRemoteSocketAddress() + " ] disconnected.");
         }
     }
 }
