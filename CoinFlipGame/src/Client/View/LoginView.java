@@ -17,6 +17,7 @@ public class LoginView
     private JPasswordField password;
     private JButton login;
     private JButton signUp;
+    private JLabel errorMessage;
 
     //  Sources
     //      https://www.cs.rutgers.edu/courses/111/classes/fall_2011_tjang/texts/notes-java/GUI/layouts/42boxlayout-spacing.html
@@ -72,14 +73,18 @@ public class LoginView
 
         inputPanel.add(buttonPanel);
 
+        errorMessage = new JLabel();
+        inputPanel.add(errorMessage);
+
         jFrame.add(inputPanel, BorderLayout.CENTER);
         inputPanel.add(Box.createVerticalGlue());
 
     }
 
     public String getUsername() { return username.getText(); }
-    public String getPassword() { return username.getText(); }
+    public String getPassword() { return password.getText(); }
 
+    public void setMessage(String message) { errorMessage.setText(message); }
     public void setLoginListener(ActionListener a) { login.addActionListener(a); }
     public void setSignUpListener(ActionListener a) { signUp.addActionListener(a); }
 }
