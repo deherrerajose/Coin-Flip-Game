@@ -25,8 +25,8 @@ public class ClientNetwork
         if (socket == null || socket.isClosed())
         {
             socket = new Socket(host, port);
-            BufferedReader serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter serverOutput = new PrintWriter(socket.getOutputStream(), true);
+            serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            serverOutput = new PrintWriter(socket.getOutputStream(), true);
         }
     }
 

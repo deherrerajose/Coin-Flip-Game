@@ -4,7 +4,6 @@ public class PlayerModel {
 /*
     This data object will hold the player information.
  */
-    private int playerID;
     private float balance;
     private String username;
     private String hashed_password;
@@ -17,15 +16,6 @@ public class PlayerModel {
         this.username = username;
         this.balance = 1000;
         this.hashed_password = password;
-    }
-
-    // Getters & Setters for `playerID`
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
     }
 
     // Getters & Setters for `balance`

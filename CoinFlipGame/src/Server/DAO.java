@@ -13,10 +13,9 @@ public class DAO {
     private static void initializeDatabase(Connection connection) {
         try {
             String cmd = "CREATE TABLE IF NOT EXISTS players (" +
-                    "id INTEGER PRIMARY KEY," +
-                    "balance TEXT," +
-                    "username INTEGER," +
-                    "hashed_password TEXT);";
+                    "username TEXT PRIMARY KEY," +
+                    "hashed_password TEXT," +
+                    "balance REAL);";
             connection.createStatement().executeUpdate(cmd);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,31 +59,38 @@ public class DAO {
         try {
             connection = getConnection();
             PlayerModel player = new PlayerModel();
-            String cmd = "SELECT * FROM students WHERE username = ?;";
-            ResultSet rs = connection.createStatement().executeQuery(cmd);
-            while(rs.next()){
-                player.setPlayerID(rs.getInt("playerID"));
-                player.setBalance(rs.getFloat("balance"));
-                player.setUsername(rs.getString("username"));
-                player.setHash(rs.getString("hashed_password"));
-            }
+            String cmd = "SELECT * FROM players WHERE username = ?;";
+            PreparedStatement stmt = connection.prepareStatement(cmd);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+//            System.out.println(rs.toString());
+
+            if (!rs.next())
+                return null;
+
+            player.setBalance(rs.getFloat("balance"));
+            player.setUsername(rs.getString("username"));
+            player.setHash(rs.getString("hashed_password"));
+
+//            System.out.println(player.getUsername());
+//            System.out.println(player.getHash());
 
             return player;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     // UPDATE PLAYER BALANCE
     public static void updatePlayerBalance(PlayerModel player, float newBalance) {
-        String cmd = "UPDATE players SET balance = ? WHERE playerID = ?;";
+        String cmd = "UPDATE players SET balance = ? WHERE username = ?;";
         try {
             connection = getConnection();
             PreparedStatement stmt = connection.prepareStatement(cmd);
 
             stmt.setFloat(1, newBalance);
-            stmt.setInt(2, player.getPlayerID());
+            stmt.setString(2, player.getUsername());
             stmt.executeUpdate();
 
         } catch (SQLException ex) {

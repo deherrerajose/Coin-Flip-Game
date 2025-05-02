@@ -27,9 +27,10 @@ public class ClientHandler implements Runnable {
                 String credentialsPacket;
                 while ((credentialsPacket = bufferedReader.readLine()) == null);
 
+                // Packet: "<username:String> <password:String> <authType:0/1>"
                 System.out.println("Received Packet [ " + credentialsPacket + " ] by player: [ " + clientSocket.getRemoteSocketAddress() + " ]");
 
-                // Aggregate the information from the incoming packet (String separated by colons)
+                // Parse the information from the incoming packet (String separated by colons)
                 String username, password;
                 int authType;
                 String[] creds = credentialsPacket.split(":");
@@ -49,15 +50,20 @@ public class ClientHandler implements Runnable {
                             bufferedWriter.newLine();
                             bufferedWriter.flush();
 
+                            System.out.println("Sent Packet [ Username doesn't exist. ]");
+
                             continue;
                         }
 
-
-                        if (player.getHash().equals(password))
+                        String hashed_pass = player.getHash();
+                        System.out.println(hashed_pass);
+                        if (!hashed_pass.equals(password))
                         {
                             bufferedWriter.write("Password is incorrect.");
                             bufferedWriter.newLine();
                             bufferedWriter.flush();
+
+                            System.out.println("Sent Packet [ Password is incorrect. ]");
 
                             continue;
                         }
@@ -66,7 +72,11 @@ public class ClientHandler implements Runnable {
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
 
+                        System.out.println("Sent Packet [ 0 ] indicating success.");
+
                         authenticated = true;
+                        break;
+                    // Create New
                     case 1:
                         PlayerModel newPlayer = new PlayerModel(username, password);
 
@@ -74,6 +84,8 @@ public class ClientHandler implements Runnable {
                             bufferedWriter.write("Please provide both username and password.");
                             bufferedWriter.newLine();
                             bufferedWriter.flush();
+
+                            System.out.println("Sent Packet [ Please provide both username and password. ]");
 
                             continue;
                         }
@@ -84,25 +96,37 @@ public class ClientHandler implements Runnable {
                             bufferedWriter.newLine();
                             bufferedWriter.flush();
 
+                            System.out.println("Sent Packet [ Username taken. ]");
+
                             continue;
                         }
+
+                        DAO.createNewPlayer(newPlayer);
 
                         bufferedWriter.write("0");
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
 
+                        System.out.println("Sent Packet [ 0 ] indicating success.");
+
                         authenticated = true;
+                        break;
                     default:
                         // Send packet to user (weird login, shouldn't hit this)
                         bufferedWriter.write("You shouldn't be here... Try again...");
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
+
+                        System.out.println("Sent Packet [ You shouldn't be here... Try again... ]");
+                        break;
                 }
             }
 
             String gamePacket;
             while ((gamePacket = bufferedReader.readLine()) != null) {
+                // Package: "<mode:0/1> <<betAmount:float> <betType:0/5>"
                 System.out.println("Received Packet [ " + gamePacket + " ] by player: [ " + clientSocket.getRemoteSocketAddress() + " ]");
+                // Need GameManager
             }
 
         } catch (IOException e) {
