@@ -5,6 +5,7 @@ import Client.View.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GameController {
 /*
@@ -30,6 +31,32 @@ public class GameController {
             view.setBetOption(betOptions[currentMode]);
         }
     }
+    private class BetActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            String packet = String.format(
+                "%d:%d:%f",
+                currentMode,
+                view.getBetOption(),
+                view.getBet()
+            );
+            ClientNetwork.sendString(packet);
+
+            try
+            {
+                String[] output = ClientNetwork.recieveString().split(":");
+                view.setBalance(output[0]);
+                view.setLeaders(output[1], output[2], output[3]);
+                view.setResult(betOptions[currentMode][Integer.parseInt(output[4])]);
+            }
+            catch (IOException ex)
+            {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
 
     public GameController(GameView view)
     {
@@ -37,5 +64,7 @@ public class GameController {
 
         this.view.setSwapListener(new swapActionListener());
         this.view.setBetOption(betOptions[currentMode]);
+
+        this.view.setBetListener(new BetActionListener());
     }
 }

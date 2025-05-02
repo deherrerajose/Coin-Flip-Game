@@ -1,4 +1,6 @@
 package Client.View;
+import Client.Controller.GameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -103,7 +105,7 @@ public class GameView
     }
 
     public void setResult(String res) { result.setText(res); }
-
+    public void setBalance(String bal) { balance.setText("$"+bal); }
     public void setSwapListener(ActionListener a) { swap.addActionListener(a); }
     public void setBetOption(String[] options)
     {
@@ -115,7 +117,8 @@ public class GameView
         jFrame.setVisible(true);
     }
 
+    public int getBetOption() { return dropdown.getSelectedIndex(); }
+    public String getBet() { return betAmount.getText(); }
 
-    public void setBalance(String bal) { balance.setText("$"+bal); }
-    public String readBet() { return betAmount.getText(); }
+    public void setBetListener(ActionListener a) { bet.addActionListener(a); }
 }

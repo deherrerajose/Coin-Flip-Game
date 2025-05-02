@@ -18,6 +18,10 @@ public class LoginController
         public void actionPerformed(ActionEvent e)
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 0);
+            if (output.equals("0"))
+                return;
+
+            view.setMessage(output);
         }
     }
     private class SignUpAction implements ActionListener
@@ -26,7 +30,7 @@ public class LoginController
         public void actionPerformed(ActionEvent e)
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 1);
-            if (output.equals('0'))
+            if (output.equals("0"))
                 return;
 
             view.setMessage(output);
