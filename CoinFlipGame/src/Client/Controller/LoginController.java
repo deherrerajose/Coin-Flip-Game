@@ -8,10 +8,15 @@ import java.awt.event.ActionListener;
 
 public class LoginController
 {
-/*
-        This controller will handle the users `LoginView` adn will send and receive information
-        using the `ClientNetwork`.
- */
+    boolean loginStatus = false;
+    public boolean isLoggedIn()
+    {
+        return loginStatus;
+    }
+    /*
+            This controller will handle the users `LoginView` adn will send and receive information
+            using the `ClientNetwork`.
+     */
     private class LoginAction implements ActionListener
     {
         @Override
@@ -19,7 +24,10 @@ public class LoginController
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 0);
             if (output.equals("0"))
+            {
+                loginStatus = true;
                 return;
+            }
 
             view.setMessage(output);
         }
@@ -31,7 +39,10 @@ public class LoginController
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 1);
             if (output.equals("0"))
+            {
+                loginStatus = true;
                 return;
+            }
 
             view.setMessage(output);
         }
