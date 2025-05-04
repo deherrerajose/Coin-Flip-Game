@@ -1,9 +1,7 @@
 package Client.View;
-import Client.Controller.GameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameView
@@ -45,9 +43,9 @@ public class GameView
     {
         jFrame = new JFrame();
 
-        first  = new JLabel("1. Test person");
-        second = new JLabel("2. Test person");
-        third  = new JLabel("3. Test person");
+        first  = new JLabel("1. ");
+        second = new JLabel("2. ");
+        third  = new JLabel("3. ");
 
         JPanel leaderBoard = new JPanel();
         leaderBoard.setLayout(new BoxLayout(leaderBoard, BoxLayout.Y_AXIS));
@@ -67,7 +65,7 @@ public class GameView
         JPanel betPanel = new JPanel();
         betPanel.setLayout(new BoxLayout(betPanel, BoxLayout.Y_AXIS));
 
-        balance = new JLabel("$100.00");
+        balance = new JLabel("$0.00");
         balance.setAlignmentX(Component.CENTER_ALIGNMENT);
         betAmount = new JTextField(25);
         betAmount.setMaximumSize( betAmount.getPreferredSize() );
@@ -97,11 +95,20 @@ public class GameView
 
     }
 
-    public void setLeaders(String first, String second, String third)
+    public void setLeader(int leader, String value)
     {
-        this.first.setText(first);
-        this.second.setText(first);
-        this.third.setText(first);
+        switch (leader)
+        {
+            case 2:
+                this.first.setText(" 1. $" +value);
+                break;
+            case 3:
+                this.second.setText(" 2. $"+value);
+                break;
+            case 4:
+                this.third.setText(" 3. $" +value);
+                break;
+        }
     }
 
     public void setResult(String res) { result.setText(res); }
@@ -115,6 +122,7 @@ public class GameView
             dropdown.addItem(item);
         }
         jFrame.setVisible(true);
+        dropdown.setSelectedIndex(0);
     }
 
     public int getBetOption() { return dropdown.getSelectedIndex(); }

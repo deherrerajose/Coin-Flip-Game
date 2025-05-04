@@ -44,4 +44,13 @@ public class PlayerModel {
     public void setHash(String hashed_password) {
         this.hashed_password = hashed_password;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerModel{" +
+                "balance=" + balance +
+                ", username='" + username + '\'' +
+                ", hashed_password='" + hashed_password + '\'' +
+                '}';
+    }
 }

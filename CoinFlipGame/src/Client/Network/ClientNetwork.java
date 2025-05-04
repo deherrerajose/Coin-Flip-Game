@@ -44,7 +44,7 @@ public class ClientNetwork
 
         try
         {
-            return serverInput.readLine();
+            return recieveString();
         }
         catch (IOException e)
         {
@@ -56,7 +56,11 @@ public class ClientNetwork
     {
         serverOutput.println(str);
     }
-    public static String recieveString() throws IOException {
-        return serverInput.readLine();
+
+    public static String recieveString() throws IOException
+    {
+        String output = serverInput.readLine();
+        System.out.println(String.format("Received Packet [ %s ]", output));
+        return output;
     }
 }

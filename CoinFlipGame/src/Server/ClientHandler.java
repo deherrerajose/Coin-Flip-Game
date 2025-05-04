@@ -49,7 +49,6 @@ public class ClientHandler implements Runnable {
 
                         if (logPlayer == null) {
                             sendToPlayer(bufferedWriter, "Username doesn't exist.");
-                            System.out.println("Sent Packet [ Username doesn't exist. ]");
                             continue;
                         }
 
@@ -57,12 +56,10 @@ public class ClientHandler implements Runnable {
 //                        System.out.println(hashed_pass);
                         if (!hashed_pass.equals(password)) {
                             sendToPlayer(bufferedWriter, "Password is incorrect.");
-                            System.out.println("Sent Packet [ Password is incorrect. ]");
                             continue;
                         }
 
                         sendToPlayer(bufferedWriter, "0");
-                        System.out.println("Sent Packet [ 0 ] indicating success.");
 
                         authenticated = true;
                         this.player = logPlayer;
@@ -71,22 +68,24 @@ public class ClientHandler implements Runnable {
                     // Create New
                     case 1:
                         PlayerModel newPlayer = new PlayerModel(username, password);
-
-                        if (newPlayer.getUsername() == null || newPlayer.getHash() == null) {
+                        System.out.println(newPlayer);
+                        if (
+                                newPlayer.getUsername()   == null ||
+                                newPlayer.getUsername().isEmpty() ||
+                                newPlayer.getHash() == null ||
+                                newPlayer.getHash().isEmpty()
+                        ) {
                             sendToPlayer(bufferedWriter, "Please provide both username and password.");
-                            System.out.println("Sent Packet [ Please provide both username and password. ]");
                             continue;
                         }
 
                         if (DAO.getPlayer(username) != null) {
                             sendToPlayer(bufferedWriter, "Username taken.");
-                            System.out.println("Sent Packet [ Username taken. ]");
                             continue;
                         }
 
                         DAO.createNewPlayer(newPlayer);
                         sendToPlayer(bufferedWriter, "0");
-                        System.out.println("Sent Packet [ 0 ] indicating success.");
 
                         authenticated = true;
                         this.player = newPlayer;
@@ -95,10 +94,13 @@ public class ClientHandler implements Runnable {
                     default:
                         // Send packet to user (weird login, shouldn't hit this)
                         sendToPlayer(bufferedWriter, "You shouldn't be here... Try again...");
-                        System.out.println("Sent Packet [ You shouldn't be here... Try again... ]");
                         break;
                 }
             }
+
+            //      Need to send leaderboard results and balance apon start up, just sending dummy results to reuse function
+            sendToPlayer(bufferedWriter, getString(-1));
+
 
             String gamePacket;
             while ((gamePacket = bufferedReader.readLine()) != null) {
@@ -109,6 +111,13 @@ public class ClientHandler implements Runnable {
                 int mode = Integer.parseInt(game[0]);
                 int option = Integer.parseInt(game[1]);
                 float betAmount = Float.parseFloat(game[2]);
+
+                //  Dont let players bet money they dont have
+                if (betAmount > player.getBalance())
+                {
+                    sendToPlayer(bufferedWriter, getError("You dont have enough for that bet."));
+                    continue;
+                }
 
                 switch (mode) {
                     // Coinflip
@@ -151,15 +160,49 @@ public class ClientHandler implements Runnable {
     }
 
     private String getString(int result) {
+
+        // Reordered packet format to fix issue when there is less than 3 users.
+        //      Removed colons between username and respective balance since there always displayed together anyway
+        //      A result of -1 now indicates an error message, soit needs to go first to detect that.
+
+
+        // Packet: "<result:int>:<updatedBalance:float>
+        //          <1stUsername:String> - <1stBalance:float>:
+        //          <2ndUsername:String> - <2ndBalance:float>:
+        //          <3rdUsername:String> - <3rdBalance:float>"
+
+        String message = String.format("%d:%.2f", result, player.getBalance());
+
         ArrayList<PlayerModel> leaderboard = DAO.getTopThree();
-        // Packet: "<updatedBalance:float> <1stUsername:String> <1stBalance:float> <2ndUsername:String>
-        //              <2ndBalance:float> <3rdUsername:String> <3rdBalance:float> <result>"
-        return String.format("%.2f:%s:%.2f:%s:%.2f:%s:%.2f:%d", player.getBalance(), leaderboard.get(0).getUsername(),
-                leaderboard.get(0).getBalance(), leaderboard.get(1).getUsername(), leaderboard.get(1).getBalance(),
-                leaderboard.get(2).getUsername(), leaderboard.get(2).getBalance(), result);
+        for (PlayerModel player : leaderboard)
+        {
+            message += String.format(
+                    ":%s - %.2f",
+                    player.getUsername(),
+                    player.getBalance()
+            );
+        }
+
+        return message;
     }
 
-    private void sendToPlayer(BufferedWriter bufferedWriter, String msg) throws IOException {
+    private String getError(String message)
+    {
+
+        // Reordered packet format to fix issue when there is less than 3 users.
+        //      Removed colons between username and respective balance since there always displayed together anyway
+        //      A result of -1 now indicates an error message, soit needs to go first to detect that.
+
+
+        // Packet: "<result:int>:<message:String>"
+
+        return message = String.format("-1:%s", message);
+    }
+
+
+    private void sendToPlayer(BufferedWriter bufferedWriter, String msg) throws IOException
+    {
+        System.out.println(String.format("Sent Packet [ %s ]", msg));
         bufferedWriter.write(msg);
         bufferedWriter.newLine();
         bufferedWriter.flush();
