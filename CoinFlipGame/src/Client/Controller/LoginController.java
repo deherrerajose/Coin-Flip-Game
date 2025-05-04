@@ -23,9 +23,14 @@ public class LoginController
         public void actionPerformed(ActionEvent e)
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 0);
+
+            System.out.println("Received: " + output);
+
             if (output.equals("0"))
             {
                 loginStatus = true;
+
+                view.setMessage(output);
                 return;
             }
 
@@ -38,9 +43,15 @@ public class LoginController
         public void actionPerformed(ActionEvent e)
         {
             String output = ClientNetwork.authenticateUser(view.getUsername(), view.getPassword(), 1);
+
+            System.out.println("Received: " + output);
+
             if (output.equals("0"))
             {
+
                 loginStatus = true;
+
+                view.setMessage(output);
                 return;
             }
 

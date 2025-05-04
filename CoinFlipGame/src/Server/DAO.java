@@ -1,6 +1,7 @@
 package Server;
 import Server.Model.PlayerModel;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DAO {
 /*
@@ -77,6 +78,31 @@ public class DAO {
 //            System.out.println(player.getHash());
 
             return player;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    // GRAB TOP 3 LEADERBOARD
+    public static ArrayList<PlayerModel> getTopThree() {
+        try {
+            connection = getConnection();
+            ArrayList<PlayerModel> leaderboard = new ArrayList<>();
+
+            String cmd = "SELECT username, balance FROM players ORDER BY balance DESC LIMIT 3;";
+            PreparedStatement stmt = connection.prepareStatement(cmd);
+            ResultSet rs = stmt.executeQuery();
+
+//            System.out.println(rs.toString());
+
+            while (rs.next()) {
+                PlayerModel player = new PlayerModel();
+                player.setUsername(rs.getString("username"));
+                player.setBalance(Float.parseFloat(rs.getString("balance")));
+                leaderboard.add(player);
+            }
+
+            return leaderboard;
         } catch (SQLException ex) {
             return null;
         }
