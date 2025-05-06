@@ -75,6 +75,7 @@ public class LoginView
         inputPanel.add(buttonPanel);
 
         errorMessage = new JLabel();
+        errorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
         inputPanel.add(errorMessage);
 
         jFrame.add(inputPanel, BorderLayout.CENTER);
@@ -91,6 +92,7 @@ public class LoginView
 
     public void close()
     {
+        jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE );             //https://chortle.ccsu.edu/java5/notes/chap56/ch56_9.html
         jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
     }
 }

@@ -1,5 +1,6 @@
 package Client.Controller;
 
+import Client.ClientApplication;
 import Client.Network.ClientNetwork;
 import Client.View.LoginView;
 
@@ -8,11 +9,6 @@ import java.awt.event.ActionListener;
 
 public class LoginController
 {
-    boolean loginStatus = false;
-    public boolean isLoggedIn()
-    {
-        return loginStatus;
-    }
     /*
             This controller will handle the users `LoginView` adn will send and receive information
             using the `ClientNetwork`.
@@ -28,9 +24,7 @@ public class LoginController
 
             if (output.equals("0"))
             {
-                loginStatus = true;
-
-                view.setMessage(output);
+                ClientApplication.startGame();
                 return;
             }
 
@@ -48,10 +42,7 @@ public class LoginController
 
             if (output.equals("0"))
             {
-
-                loginStatus = true;
-
-                view.setMessage(output);
+                ClientApplication.startGame();
                 return;
             }
 
