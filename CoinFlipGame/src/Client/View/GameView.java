@@ -59,8 +59,8 @@ public class GameView
 
 
         result = new JLabel("Pending...");
-        result.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jFrame.add(result, BorderLayout.EAST);
+//        result.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jFrame.add(result, BorderLayout.CENTER);
 
         JPanel betPanel = new JPanel();
         betPanel.setLayout(new BoxLayout(betPanel, BoxLayout.Y_AXIS));
