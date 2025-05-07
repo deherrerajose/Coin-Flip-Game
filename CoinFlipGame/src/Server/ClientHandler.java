@@ -177,7 +177,7 @@ public class ClientHandler implements Runnable {
         for (PlayerModel player : leaderboard)
         {
             message += String.format(
-                    ":%s - %.2f",
+                    ":%s - $%.2f",
                     player.getUsername(),
                     player.getBalance()
             );

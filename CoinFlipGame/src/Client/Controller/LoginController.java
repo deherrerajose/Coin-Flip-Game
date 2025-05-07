@@ -6,6 +6,7 @@ import Client.View.LoginView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LoginController
 {
@@ -56,6 +57,16 @@ public class LoginController
     public LoginController(LoginView view)
     {
         this.view = view;
+
+        try
+        {
+            ClientNetwork.startConnection();
+        }
+        catch (IOException e)
+        {
+            this.view.setMessage("No server Connection... Maybe wifi? Maybe Server?");
+            return;
+        }
 
         this.view.setLoginListener(new LoginAction());
         this.view.setSignUpListener(new SignUpAction());

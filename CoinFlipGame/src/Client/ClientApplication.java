@@ -19,15 +19,6 @@ public class ClientApplication
 
     public static void main(String[] arg)
     {
-        try
-        {
-            ClientNetwork.startConnection();
-        }
-        catch (IOException e)
-        {
-            return;
-        }
-
         loginView = new LoginView();
         LoginController loginController = new LoginController(loginView);
     }

@@ -100,13 +100,13 @@ public class GameView
         switch (leader)
         {
             case 2:
-                this.first.setText(" 1. $" +value);
+                this.first.setText(" 1. " +value);
                 break;
             case 3:
-                this.second.setText(" 2. $"+value);
+                this.second.setText(" 2. "+value);
                 break;
             case 4:
-                this.third.setText(" 3. $" +value);
+                this.third.setText(" 3. " +value);
                 break;
         }
     }
